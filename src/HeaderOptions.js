@@ -7,7 +7,7 @@ function HeaderOptions({ avatar, Icon, title}) {
         <div className='headerOption' >
             { Icon && <Icon className='headerOption_icon'/> }
             {avatar && <Avatar className='headerOption_icon' src= {avatar} /> }
-            <h3>{title} </h3>
+            <h4 className='headerOption_title'>{title} </h4>
         </div>
     )
 }
