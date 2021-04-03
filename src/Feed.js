@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Feed.css'
 import CreateIcon from "@material-ui/icons/Create";
 import ImageIcon from "@material-ui/icons/Image";
@@ -7,13 +7,42 @@ import EventNoteIcon from "@material-ui/icons/EventNote";
 import CalendarViewDayIcon from "@material-ui/icons/CalendarViewDay";
 import InputOptions from './InputOptions';
 import Post from './Post';
+import { db } from './firebase';
+import firebase from 'firebase'
+import { useSelector } from 'react-redux'
+import { selectUser } from "./features/userSlice";
+import FlipMove from 'react-flip-move'
+
 
 function Feed() {
-    const [posts, setPosts] = useState('')
-const sendPost = e => {
-    e.preventDefault();
-    setPosts('')
-}
+    const [posts, setPosts] = useState([])
+    const [input, setInput] = useState('')
+    const user = useSelector(selectUser);
+
+    useEffect(() => {
+        db.collection("posts")
+            .orderBy("timestamp", "desc")
+            .onSnapshot((snapshot) => (
+                setPosts(snapshot.docs.map((doc) => (
+                    {
+                        id: doc.id,
+                        data: doc.data()
+                    }
+                )))
+            ))
+    }, [])
+
+    const sendPost = e => {
+        e.preventDefault();
+        db.collection('posts').add({
+            name: user.displayName,
+            description: user.email,
+            message: input,
+            photoUrl: user.photoUrl || "",
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        setInput('')
+    }
 
     return (
         <div className='feed'>
@@ -21,7 +50,7 @@ const sendPost = e => {
                 <div className="feed_input">
                     <CreateIcon />
                     <form>
-                        <input type="text" />
+                        <input value={input} onChange={(e) => setInput(e.target.value)} type="text" />
                         <button onClick={sendPost} type="submit">Send</button>
                     </form>
                 </div>
@@ -32,18 +61,19 @@ const sendPost = e => {
                     <InputOptions Icon={CalendarViewDayIcon} title="Write article" color="#7FC15E" />
                 </div>
             </div>
-            {posts.map(({ id, data: { name, description, message, photoUrl } }) => (
-                <Post
-                    key={id}
-                    name={name}
-                    description={description}
-                    message={message}
-                    photoUrl={photoUrl}
-                />
-            ))}
-            <Post name='Murat sahin'
-                description='desc'
-                message='message' />
+
+            {/* Posts */}
+            <FlipMove>
+                {posts?.map(({ id, data: { name, description, message, photoUrl } }) => (
+                    <Post
+                        key={id}
+                        name={name}
+                        description={description}
+                        message={message}
+                        photoUrl={photoUrl}
+                    />
+                ))}
+            </FlipMove>
         </div>
     )
 }
