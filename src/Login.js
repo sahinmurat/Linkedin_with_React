@@ -20,7 +20,7 @@ function Login() {
             .then((userAuth) => {
                 userAuth.user.updateProfile({
                     displayName: name,
-                    photoURL: profilePic
+                    photoUrl: profilePic
                 })
                     .then(() => {
                         dispatch(login({
