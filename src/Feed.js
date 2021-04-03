@@ -50,7 +50,7 @@ function Feed() {
                 <div className="feed_input">
                     <CreateIcon />
                     <form>
-                        <input value={input} onChange={(e) => setInput(e.target.value)} type="text" />
+                        <input placeholder='Type Your Message and Push Enter!' value={input} onChange={(e) => setInput(e.target.value)} type="text" />
                         <button onClick={sendPost} type="submit">Send</button>
                     </form>
                 </div>

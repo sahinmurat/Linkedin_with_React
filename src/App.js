@@ -13,12 +13,7 @@ import Widget from "./Widget";
 
 function App() {
   const user = useSelector(selectUser);
-  // const user = 'aa'
-
-
   const dispatch = useDispatch();
-
-  console.log('user', user)
 
   useEffect(() => {
     auth.onAuthStateChanged((userAuth) => {

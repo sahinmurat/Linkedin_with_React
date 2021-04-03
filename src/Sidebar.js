@@ -17,7 +17,7 @@ function Sidebar() {
         <div className='sidebar'>
             <div className="sidebar_top">
                 <img src='https://definitelynotsooc.files.wordpress.com/2011/11/cac_finished1.jpg' alt='' />
-                <Avatar>{user.displayName[0]} </Avatar>
+                <Avatar src={user.photoUrl} >{user.email[0]} </Avatar>
                 <h2>{user.displayName}</h2>
                 <h4>{user.email}</h4>
             </div>

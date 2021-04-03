@@ -10,12 +10,10 @@ import HeaderOptions from './HeaderOptions';
 import { useDispatch } from "react-redux";
 import { auth } from './firebase';
 import { logout } from './features/userSlice'
-import { useSelector } from 'react-redux'
-import { selectUser } from "./features/userSlice";
 
 function Header() {
+    
     const dispatch = useDispatch();
-    const user = useSelector(selectUser);
 
     const logoutofApp = () => {
         dispatch(logout())
@@ -28,7 +26,6 @@ function Header() {
                 <div className="header_search">
                     <SearchIcon />
                     <input placeholder='Search' type='text' />
-
                 </div>
             </div>
             <div className="header_right">
@@ -38,6 +35,7 @@ function Header() {
                 <HeaderOptions title="Messaging" Icon={ChatIcon} />
                 <HeaderOptions title="Notifications" Icon={NotificationsIcon} />
                 <HeaderOptions
+                    title='Logout'
                     avatar={true}
                     onClick={logoutofApp}
                 />
